@@ -1,3 +1,4 @@
+from django.contrib import admin
 from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
@@ -29,12 +30,12 @@ def home(request):
     return render(request, 'base/base.html')
 
 urlpatterns = [
-    # Главная страница
-    path('', home, name='home'),
+    # Админ-панель
+    path("admin/", admin.site.urls),
 
     # Аутентификация
-    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path("api/auth/", include("dj_rest_auth.urls")),
+    path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
 
     # Приложения
     path('api/', include('users.urls')),
