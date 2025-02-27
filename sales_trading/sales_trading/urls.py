@@ -3,15 +3,14 @@ from django.urls import path, include, re_path
 from django.conf import settings
 from django.conf.urls.static import static
 from django.shortcuts import render
-from rest_framework_simplejwt.views import (
-    TokenObtainPairView,
-    TokenRefreshView,
-)
+# from rest_framework_simplejwt.views import (
+#     TokenObtainPairView,
+#     TokenRefreshView,
+# )
 from rest_framework import permissions
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 
-# Swagger Schema
 schema_view = get_schema_view(
     openapi.Info(
         title="Sales & Trading API",
@@ -25,31 +24,23 @@ schema_view = get_schema_view(
     permission_classes=(permissions.AllowAny,),
 )
 
-# Представление для рендеринга HTML
-def home(request):
-    return render(request, 'base/base.html')
 
 urlpatterns = [
-    # Админ-панель
     path("admin/", admin.site.urls),
 
-    # Аутентификация
     path("api/auth/", include("dj_rest_auth.urls")),
     path("api/auth/registration/", include("dj_rest_auth.registration.urls")),
 
-    # Приложения
     path('api/', include('users.urls')),
     path('api/', include('products.urls')),
     path('api/', include('trading.urls')),
     path('api/sales/', include('sales.urls')),
     path('api/analytics/', include('analytics.urls')),
 
-    # Документация Swagger и Redoc
     re_path(r'^swagger(?P<format>\.json|\.yaml)$', schema_view.without_ui(cache_timeout=0), name='schema-json'),
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 
-# Подключение статики в режиме DEBUG
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
