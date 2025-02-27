@@ -27,3 +27,32 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    image: redis
+    restart: always
+    container_name: redis
+
+  celery:
+    restart: always
+    build:
+      context: .
+    command: celery -A core worker --loglevel=info
+    volumes:
+      - .:/django
+    container_name: celery
+    depends_on:
+      - db
+      - redis
+      - app
+
+  celery-beat:
+    restart: always
+    build:
+      context: .
+    command: celery -A core beat --loglevel=info
+    volumes:
+      - .:/django
+    container_name: celery-beat
+    depends_on:
+      - celery

@@ -3,6 +3,7 @@ from .models import User
 from .serializers import UserSerializer
 from .permissions import IsAdmin, IsTrader, IsSalesRep, IsCustomer
 from rest_framework.permissions import IsAuthenticated
+from users.tasks import send_welcome_email
 
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
@@ -16,3 +17,7 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
+    
+    def perform_create(self, serializer):
+        user = serializer.save()
+        send_welcome_email.delay(user.email)  
