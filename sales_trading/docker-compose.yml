@@ -1,33 +1,29 @@
-version: '3.8'
-
 services:
-  db:
-    image: postgres:15
-    restart: always
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_DB: sales_trading_db
-      POSTGRES_USER: sales_trading_user
-      POSTGRES_PASSWORD: password123
-    ports:
-      - '5432:5432'
-
-  backend:
+  app:
     build: .
-    restart: always
-    depends_on:
-      - db
     volumes:
-      - .:/app
-    environment:
-      - DJANGO_SETTINGS_MODULE=sales_trading.settings
+      - .:/django
     ports:
-      - '8000:8000'
-    command: >
-      sh -c "python manage.py migrate &&
-             python manage.py collectstatic --noinput &&
-             python manage.py runserver 0.0.0.0:8000"
+      - 8000:8000
+    image: app:django
+    container_name: django_container
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      db:
+        condition: service_healthy
 
-volumes:
-  postgres_data:
+  db:
+    image: postgres
+    restart: always
+    volumes:
+      - ./data/db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=postgres
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Qwerty2018
+    container_name: postgres_db
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U postgres']
+      interval: 10s
+      timeout: 5s
+      retries: 5

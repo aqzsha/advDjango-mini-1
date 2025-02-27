@@ -122,13 +122,15 @@ WSGI_APPLICATION = 'sales_trading.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'sales_trading_db',
-        'USER': 'sales_trading_user',
-        'PASSWORD': 'password123',
-        'HOST': 'localhost',  
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'Qwerty2018',
+        'HOST': 'db',  # Убедись, что тут 'db', а не 'localhost'!
         'PORT': '5432',
     }
 }
+
+
 
 
 # Password validation
