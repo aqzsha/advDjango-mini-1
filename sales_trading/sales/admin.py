@@ -1,3 +1,6 @@
 from django.contrib import admin
+from .models import SalesOrder, SalesOrderItem, Invoice
 
-# Register your models here.
+admin.site.register(SalesOrder)
+admin.site.register(SalesOrderItem)
+admin.site.register(Invoice)

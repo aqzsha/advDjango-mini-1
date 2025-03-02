@@ -37,7 +37,7 @@ services:
     restart: always
     build:
       context: .
-    command: celery -A core worker --loglevel=info
+    command: celery -A sales_trading worker --loglevel=info
     volumes:
       - .:/django
     container_name: celery
@@ -50,7 +50,7 @@ services:
     restart: always
     build:
       context: .
-    command: celery -A core beat --loglevel=info
+    command: celery -A sales_trading beat --loglevel=info
     volumes:
       - .:/django
     container_name: celery-beat

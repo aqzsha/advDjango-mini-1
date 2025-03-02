@@ -77,15 +77,15 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'sales_trading.urls'
 
-# Разрешить доступ с фронтенда
-CORS_ALLOW_ALL_ORIGINS = True  # Разрешить все домены (можно сделать безопаснее)
 
-# Либо точечно указать разрешённые источники
+CORS_ALLOW_ALL_ORIGINS = True  
+
+
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # Разрешаем Next.js
+    "http://localhost:3000",  
 ]
 
-# Если используешь credentials (cookies, auth)
+
 CORS_ALLOW_CREDENTIALS = True
 CSRF_TRUSTED_ORIGINS = ["http://localhost:3000"]
 
@@ -125,7 +125,7 @@ DATABASES = {
         'NAME': 'postgres',
         'USER': 'postgres',
         'PASSWORD': 'Qwerty2018',
-        'HOST': 'db',  # Убедись, что тут 'db', а не 'localhost'!
+        'HOST': 'db',  
         'PORT': '5432',
     }
 }
